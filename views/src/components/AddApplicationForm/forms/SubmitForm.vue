@@ -84,6 +84,7 @@ import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
 import convert from '../../../helpers/full.js'
 import * as _ from 'lodash'
+import * as config from '../../../config.js'
 
 @Component({})
 export default class SubmitForm extends Vue {
@@ -146,7 +147,7 @@ export default class SubmitForm extends Vue {
     if (localStorage.getItem('logged_in') === 'true') {
       fullInfo.golos_username = localStorage.getItem('username')
     }
-    this.$http.post('http://ninja-analytics.ru:8000/create-application', JSON.stringify(fullInfo))
+    this.$http.post(config.chaingearApiUrl + '/create-application', JSON.stringify(fullInfo))
       .then(res => {
         this.loading = false
         this.successful = true
