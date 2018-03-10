@@ -84,7 +84,7 @@
             <v-layout row wrap>
               <v-btn color="primary" class='submit-button' @click="next">Continue</v-btn>
               <v-spacer></v-spacer>
-              <v-speed-dial
+              <!--<v-speed-dial
             v-model="fab"
             :bottom="true"
             :right="true"
@@ -112,7 +112,7 @@
             >
               <v-icon>delete</v-icon>
             </v-btn>
-          </v-speed-dial>
+          </v-speed-dial>-->
             </v-layout>
             <v-layout row wrap>
 
