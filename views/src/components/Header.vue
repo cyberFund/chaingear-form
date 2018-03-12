@@ -2,6 +2,7 @@
   <div >
     <v-toolbar app clipped-left>
     <v-toolbar-title @click='goHome'>Chaingear</v-toolbar-title>
+    <!-- Buttons list that is visible on small viewports -->
     <v-menu :nudge-width="100" class="hidden-md-and-up">
         <v-toolbar-title slot="activator">
           <v-icon color='grey'>fa-bars</v-icon>
@@ -16,13 +17,14 @@
         </v-layout>
         </v-list>
       </v-menu>
+    <!-- Buttons that are visible on medium and large viewports -->
     <v-toolbar-items class="ml-4 hidden-sm-and-down">
       <v-btn flat @click="addInfoRedirect">Add info</v-btn>
       <v-btn flat @click="crowdsalesRedirect">Applications</v-btn>
     </v-toolbar-items>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <!--<LoginForm v-if='!loggedIn'></LoginForm>-->
+    <!-- Dialog component that show window with contact information -->
     <v-dialog v-model="dialog" persistent max-width="500px">
       <v-btn flat class='mt-4' slot="activator">Having problems?</v-btn>
       <v-card color='grey lighten-4'>
@@ -52,7 +54,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  
     </v-toolbar-items>
   </v-toolbar>
   </div>
@@ -60,27 +61,20 @@
 <script>
 import Vue from 'vue'
 import {Component} from 'vue-property-decorator'
-import LoginForm from './LoginForm'
 
-@Component({
-  components: {
-    LoginForm
-  }
-})
+@Component({})
 export default class IcoForm extends Vue {
-  username
-  loggedIn
+  // Prop used to show contacts dialog. Changed to true if user clicks 'Having problems' button and changed back to false after clicking 'Ok' inside contacts dialog
   dialog = false
-  beforeCreate () {
-    this.loggedIn = (localStorage.getItem('logged_in') === 'true')
-    if (this.loggedIn === true) this.username = localStorage.getItem('username')
-  }
+  // This method redirects to the main page route
   goHome () {
     this.$router.push('/')
   }
+  // This method redirects to the applications list page route
   crowdsalesRedirect () {
     this.$router.push('/applications')
   }
+  // This method redirects to the form page route
   addInfoRedirect () {
     this.$router.push('/add_info')
   }

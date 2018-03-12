@@ -56,6 +56,7 @@
 import Vue from 'vue'
 import {Component, Watch} from 'vue-property-decorator'
 import dateformat from 'dateformat'
+import * as config from '../../config.js'
 
 @Component({})
 export default class AllApplications extends Vue {
@@ -83,7 +84,7 @@ export default class AllApplications extends Vue {
   }
   // Make an call to the Chaingear API, sort received data, splits it into into subarrays of 10 elements and assigns first subarray to the pageContent property
   mounted () {
-    this.$http.get('http://ninja-analytics.ru:8000/get-all-applications')
+    this.$http.get(config.chaingearApiUrl + '/get-all-applications')
       .then(result => {
         const chunk = (arr, len) => {
           let chunks = [],
@@ -94,15 +95,19 @@ export default class AllApplications extends Vue {
           }
           return chunks
         }
-        result = result.filter(proj => proj.project_info !== undefined)
+        result.body.applications = result.body.applications.filter(proj => proj.project_info !== undefined)
+        console.log(result.body.applications)
         const sorted = result.body.applications.sort((a, b) => new Date(a.timestamp).valueOf() - new Date(b.timestamp).valueOf()).filter(project => project.project_info !== undefined).map(project => {
           if (project.timestamp !== undefined) {
             project.readableDate = dateformat(project.timestamp, 'mmmm dS, yyyy, h:MM:ss TT')
           }
           project.timestamp = new Date(project.timestamp).valueOf()
           const info = project.project_info
+          console.log(info.blockchain.links)
           if (info.blockchain.links !== undefined) {
-            project.website = info.blockchain.links.filter(link => link.type === 'website')[0].url
+            if (info.blockchain.links.filter(link => link.type === 'website').length > 0) {
+              project.website = info.blockchain.links.filter(link => link.type === 'website')[0].url
+            }
             if (info.blockchain.links.filter(link => link.type === 'paper').length > 0) {
               project.paper = info.blockchain.links.filter(link => link.type === 'paper')[0].url
             } else project.paper = false
@@ -124,7 +129,6 @@ export default class AllApplications extends Vue {
   @Watch('page')
   onPageChanged(val, oldVal) {
     this.pageContent = this.applications[val - 1]
-    console.log('hi')
   }
   handleCurrentChange (e) {
     this.pageContent = this.applications[e-1]

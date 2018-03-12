@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- A page with Chaingear descriprion and listing rules -->
     <v-layout row wrap justify-center>
       <v-flex xs8>
       <v-card color='grey lighten-3'>
@@ -48,41 +49,13 @@
                <v-btn large color="success" class="mt-3" @click='addInfoRedirect'>Add project</v-btn>
               </v-flex>
             </v-layout>
-            <v-layout row wrap>
-             
+            <v-layout row wrap>  
             </v-layout>
           </v-container>
-        
         </v-card-text>
         </v-card>
       </v-flex>
     </v-layout>
-
-    <!--<v-card color="grey lighten-4" flat>
-      <v-card-media
-        height='100px'
-        src="/dist/static/doc-images/cards/docks2.png">
-        <v-container fill-height fluid>
-          <v-layout fill-height>
-            <v-flex xs12 align-end flexbox>
-              <span class="headline">Welcome to Chaingear!</span>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card-media>
-      <v-card-text>
-        <v-container fluid>
-          <v-layout row wrap>
-            <span class="subheading">Verified and machine readable blockchain metadata. If you are blockchain developer you can easily enrich metadata of system you are building.
-
-            Trying to solve the problem of cryptocurrencies and cryptoassets metadata, this repository accumulate dependencies, specs, logos, links and other sensitive metadata.
-
-            Rationale behind Chaingear you can find in a paper: cyber•Rating: Cryptoproperty Evaluation.</span>
-          </v-layout>
-        </v-container>
-      </v-card-text>
-    </v-card>-->
-   
   </div>
 </template>
 <script>
@@ -91,6 +64,7 @@ import {Component} from 'vue-property-decorator'
 
 @Component({})
 export default class StartInfoPage extends Vue {
+  // This method redirects to the form page route
   addInfoRedirect () {
     this.$router.push('/add_info')
   }

@@ -1,3 +1,3 @@
 module.exports = {
-  chaingearApiUrl: 'http://ninja-analytics.ru:8000'
+  chaingearApiUrl: 'http://localhost:8000' // URL of Chaingear-backend server
 }

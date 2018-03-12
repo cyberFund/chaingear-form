@@ -2,32 +2,28 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import StartInfoPage from '../components/StartInfoPage'
 import AddProjectFormContainer from '../components/AddApplicationForm/AddProjectFormContainer'
-// import ReviewMainContainer from '../components/Review/ReviewMainContainer'
-// import ApplicationsMainContainer from '../components/Applications/ApplicationsMainContainer'
-
+import AllApplications from '../components/Applications/AllApplications'
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    // Main page route
     {
       path: '/',
       name: 'Info start page',
       component: StartInfoPage
     },
+    // Form route
     {
       path: '/add_info',
       name: 'Add info',
       component: AddProjectFormContainer
     },
-    /* {
-      path: '/review',
-      name: 'Review applications',
-      component: ReviewMainContainer
-    },
+    // All applications list route
     {
       path: '/applications',
       name: 'All applications',
-      component: ApplicationsMainContainer
-    } */
+      component: AllApplications
+    }
   ]
 })
