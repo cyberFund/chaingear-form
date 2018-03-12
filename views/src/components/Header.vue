@@ -25,20 +25,20 @@
       <!--<LoginForm v-if='!loggedIn'></LoginForm>-->
     <v-dialog v-model="dialog" persistent max-width="500px">
       <v-btn flat class='mt-4' slot="activator">Having problems?</v-btn>
-      <v-card>
+      <v-card color='grey lighten-4'>
         <v-card-title>
-          <span class="display-1">Contacts</span>
+          <span class="display-1">Connect with us: </span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout row wrap>
-              <p class="headline">Connect with us: </p>
-              </v-layout>
               <v-layout row wrap class="ml-2">
               <p class="subheading"><v-icon>fa-envelope</v-icon>  <a href='mailto:m.odegov@cyberfund.io'>Mail</a></p>
               </v-layout>
               <v-layout row wrap class="ml-2">
-              <p class="subheading"><v-icon>fa-github</v-icon> <a href='https://github.com/cyberFund/chaingear'>Github</a></p>
+              <p class="subheading"><v-icon>fa-github</v-icon> <a href='https://github.com/cyberFund/chaingear-form/issues'>Github Issues</a></p>
+              </v-layout>
+              <v-layout row wrap class="ml-2">
+              <p class="subheading"><v-icon>fa-book</v-icon> <a href="https://github.com/cyberFund/chaingear-form/wiki/Add-project-to-ICO-Radar">User Guide</a></p>
               </v-layout>
               <v-layout row wrap class="ml-2">
               <p class="subheading"><v-icon>fa-twitter</v-icon> <a href='https://twitter.com/cyberfundio'>Twitter</a></p>

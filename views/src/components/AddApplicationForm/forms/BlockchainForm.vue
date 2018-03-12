@@ -20,13 +20,13 @@
               <v-text-field
                 name='project_name'
                 label='Project Name*'
-                v-validate="'required'"
+                v-validate.initial="'required'"
                 v-model='form.project_name'>
               </v-text-field>
               <v-text-field
-                name="input-1"
+                name="input_1"
                 label='Headline*'
-                v-validate="'required'"
+                v-validate.initial="'required'"
                 hint="It shouldn't be more than 50 symbols long"
                 persistent-hint
                 v-model='form.headline'>
@@ -34,7 +34,8 @@
               <v-text-field
                 label='Short project description*'
                 multi-line
-                v-validate="'required'"
+                name='short_descr'
+                v-validate.initial="'required'"
                 hint="Write short project description (2-3 paragraphs long)"
                 persistent-hint
                 v-model='form.short_description'>
@@ -54,17 +55,18 @@
                 v-bind:items="states"
                 v-model="form.state"
                 v-if='isICO'
-                label="Project State*"
+                label="Project State"
                 max-height='auto'
                 item-text="label"
                 item-value="value"></v-select>
               <v-select
                 v-bind:items="dependency"
                 v-model="form.dependency"
-                v-validate="'required'"
+                v-validate.initial="'required'"
                 label="Dependency*"
                 hint="Select blockchain used to issue project tokens"
                 persistent-hint
+                name='dependency'
                 max-height='auto'
                 item-text="label"
                 item-value="value"></v-select>
@@ -233,7 +235,6 @@ export default class BlockchainForm extends Vue {
   ]
   // Checks if all fields are valid and if so automatically sets blockchain.dependency value and calls nextPane method defined on parent component
   next () {
-    console.log(this.projectInfo)
     const valid = (this.errors.items.length === 0)
     if (valid === true) {
       if(this.form.dependency !== 'independent') {
