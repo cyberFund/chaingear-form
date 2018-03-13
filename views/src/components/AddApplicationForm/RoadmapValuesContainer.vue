@@ -91,6 +91,7 @@ import RoadmapValuesForm from './forms/RoadmapValuesForm'
   }
 })
 export default class RoadmapValuesContainer extends Vue {
+  // Props that is used to render a form
   @Prop({default: () => {}})
   firstField
   @Prop({default: () => {}})
@@ -112,7 +113,9 @@ export default class RoadmapValuesContainer extends Vue {
   @Prop({default: ''})
   head
   dialog = false
+  // This values is used to render a select input
   status = ['Planned', 'In work', 'Completed']
+  // This values is used as data table headers
   headers1 = [
     {
       text: '#',
@@ -125,6 +128,7 @@ export default class RoadmapValuesContainer extends Vue {
         { text: 'Start date', value: 'start_date' },
         { text: 'Actions', value: 'milestone', sortable: false }
       ]
+  // This properties is used to edit values in data table
   editedIndex = -1
   editedItem = {
     milestone: '',

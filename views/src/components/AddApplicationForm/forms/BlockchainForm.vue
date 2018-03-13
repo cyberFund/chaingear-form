@@ -86,38 +86,6 @@
             <v-layout row wrap>
               <v-btn color="primary" class='submit-button' @click="next">Continue</v-btn>
               <v-spacer></v-spacer>
-              <!--<v-speed-dial
-            v-model="fab"
-            :bottom="true"
-            :right="true"
-            :top='false'
-            :left='false'
-            direction="top"
-            :transition="'slide-y-reverse-transition'"
-          >
-            <v-btn
-              slot="activator"
-              color="blue darken-2"
-              dark
-              fab
-              hover
-              v-model="fab">
-              <v-icon>account_circle</v-icon>
-              <v-icon>close</v-icon>
-            </v-btn>
-            <v-btn
-              fab
-              dark
-              small
-              @click.native='askWarn = true'
-              color="red"
-            >
-              <v-icon>delete</v-icon>
-            </v-btn>
-          </v-speed-dial>-->
-            </v-layout>
-            <v-layout row wrap>
-
             </v-layout>
             <v-dialog v-model="notEnough" max-width="390">
               <v-card dark>
@@ -133,19 +101,6 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-layout row justify-center>
-              <v-dialog v-model="askWarn" max-width="290">
-                <v-card>
-                  <v-card-title class="headline">Remove session?</v-card-title>
-                  <v-card-text>Do you sure want to remove saved session?</v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" flat="flat" @click.native="askWarn = false">No</v-btn>
-                    <v-btn color="green darken-1" flat="flat" @click="clean">Yes</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-layout>
           </v-container>
         </v-card-text>
       </v-card>
@@ -156,22 +111,8 @@
 import Vue from 'vue'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import {Component} from 'vue-property-decorator'
-import { mapFields } from 'vuex-map-fields'
-import CleanStorage from '@/helpers/clean-storage'
 
-@Component({
-  validations: {
-      project_name: required,
-      headline: {
-        required,
-        maxLength: maxLength(50)
-      },
-      text: required,
-      state: required,
-      dependency: required,
-      consensus_name: required
-  }
-})
+@Component({})
 export default class BlockchainForm extends Vue {
   // Computed prop that fetches blockchain description object from state
   get form () {
@@ -180,22 +121,6 @@ export default class BlockchainForm extends Vue {
   // Computed prop that fetches isIco property from state
   get isICO () {
     return this.$store.getters.getIsIco
-  }
-  // This properties is used in floating button functiomality
-  fab = false
-  askWarn = false
-  cleaner = new CleanStorage()
-  // This method invokes clean method from CleanStorage class to delete saved project info from state (this functional is currently disabled)
-  clean () {
-    this.askWarn = false
-    // this.cleaner.clean()
-  }
-  /*mounted () {
-    this.cleaner = new CleanStorage()
-    this.clean = this.cleaner.clean
-  }*/
-  warnAsk () {
-
   }
   // This method changes isIco property in store based on corresponding select input value
   changeIsIco (e) {
@@ -210,8 +135,6 @@ export default class BlockchainForm extends Vue {
     dependency: 'Dependency',
     isICO: 'Is tokensale'
   }
-  notEnough = false
-  errorMessage = ''
   states = [
     {value: '0', label: 'Project (before tokensale begins)'},
     {value: '1', label: 'Pre-public (tokensale ends, but tokens ain`t tradable)'},
@@ -233,6 +156,9 @@ export default class BlockchainForm extends Vue {
     {value: true, label: 'Yes'},
     {value: false, label: 'No'}
   ]
+  // This properties are used to show warn message if not all fields are valid
+  notEnough = false
+  errorMessage = ''
   // Checks if all fields are valid and if so automatically sets blockchain.dependency value and calls nextPane method defined on parent component
   next () {
     const valid = (this.errors.items.length === 0)

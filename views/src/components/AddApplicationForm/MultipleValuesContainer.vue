@@ -81,6 +81,7 @@ import MultipleValuesForm from './forms/MultipleValuesForm'
   }
 })
 export default class AddressesFormContainer extends Vue {
+  // Props that is used to render a form
   @Prop({default: () => {}})
   firstField
   @Prop({default: () => {}})
@@ -97,12 +98,6 @@ export default class AddressesFormContainer extends Vue {
   head
   @Prop({default: ''})
   subhead
-  selected = []
-  expanded = false
-  i = 0
-  mounted () {
-    console.log('items', this.items)
-  }
   // This method sends data from MultipleValuesForm component to a parent component (for example, FundsFormContainer)
   changeValue (data) {
     const tmp = {}

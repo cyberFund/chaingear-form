@@ -33,13 +33,11 @@
         </v-layout>
         </v-flex>
         <v-flex xs1>
-        
           <v-btn 
             flat 
             color='success' 
             @click="send"> <v-icon center color="green darken-2">fa-plus-circle</v-icon>
-          </v-btn>
-        
+          </v-btn>  
         </v-flex>
         </v-layout>
       </v-container>
@@ -66,6 +64,7 @@ import {Component, Prop} from 'vue-property-decorator'
 
 @Component({})
 export default class RoadmapValuesForm extends Vue {
+  // Props that defines data for form rendering 
   @Prop({default: ''})
   color
   @Prop({default: {}})

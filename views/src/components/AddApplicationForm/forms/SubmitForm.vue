@@ -82,7 +82,6 @@
 /* eslint-disable */
 import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
-import convert from '../../../helpers/full.js'
 import * as _ from 'lodash'
 import * as config from '../../../config.js'
 
@@ -147,19 +146,11 @@ export default class SubmitForm extends Vue {
     if (localStorage.getItem('logged_in') === 'true') {
       fullInfo.golos_username = localStorage.getItem('username')
     }
+    console.log(JSON.stringify(fullInfo))
     this.$http.post(config.chaingearApiUrl + '/create-application', JSON.stringify(fullInfo))
       .then(res => {
         this.loading = false
         this.successful = true
-        this.htmlUrl = res.body.html_url
-        const logged = localStorage.getItem('logged_in')
-        /*if (logged === 'true') {
-          this.$http.post('http://ninja-analytics.ru:8000/create-post', JSON.stringify(fullInfo))
-            .then(res => {
-              console.log(res)
-              this.loading = false
-            })
-        } */
       }).catch(error => {
         console.log('error', error)
         this.errorCode = error.status + ': ' + error.statusText

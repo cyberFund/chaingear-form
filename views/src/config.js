@@ -1,3 +1,3 @@
 module.exports = {
-  chaingearApiUrl: 'http://localhost:8000' // URL of Chaingear-backend server
+  chaingearApiUrl: 'http://188.166.87.208:8000' // URL of Chaingear-backend server
 }

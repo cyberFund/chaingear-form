@@ -78,7 +78,6 @@ export default class AppsFormContainer extends Vue {
   active = 0
   // This method calls parent nextPane() method to change current page to previous or next
   moveOrStay (data) {
-    console.log(this.$store.getters.getAllApps)
     if (data.nextPage === true) {
       this.$emit('interface', {form: 'apps'})
     } else if (data.prev === true) {

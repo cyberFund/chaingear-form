@@ -130,18 +130,24 @@ import {Component, Prop} from 'vue-property-decorator'
 
 @Component({})
 export default class Token extends Vue {
+  // This component rendered inside a lsi and this prop defines a number of component instance in this list
   @Prop({default: 0})
   num
+  // Computed property that gets corresponding object from state tokens list
   get form () {
     return this.$store.getters.getToken(this.num)
   }
+  // This list is used to render select input
   purpose = ['Raising funds', 'Utility', 'Both']
   type = ['Core token', 'Blockchain issued token']
+  // Properties used to render alert
   notEnough = false
   question = false
+  // This method calls parent nextPane method to switch current pahe to previous
   prev () {
     this.$emit('interface', {prev: true})
   }
+  // This method validates data entered in form and if true, adds empty object in state tokens array and switch tab or page to next
   ask () {
     const valid = (this.errors.items.length === 0)
     if (valid === true && this.form.commited === false) {
@@ -155,10 +161,12 @@ export default class Token extends Vue {
       this.errorMessage = 'Please, fill all required fields'
     }
   }
+  // Method that invoked when user don't want to add another app description
   move () {
     this.question = false
     this.$emit('interface', {nextPage: true})
   }
+  // Method that invoked when user decides to add another app description
   stay () {
     this.question = false
     this.$emit('interface', {nextPage: false})

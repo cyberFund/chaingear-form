@@ -62,12 +62,13 @@ export default class TokensFormContainer extends Vue {
   get tokens () {
     return this.$store.getters.getAllTokens
   }
-  n = 0
+  // Number of selected tab
   active = 0
+  // this properties is used to render alert
   notEnough = false
   errorMessage = ''
+  // This method calls parent nextPane() method to change current page to previous or next
   moveOrStay (data) {
-    console.log(this.$store.getters.getAllTokens)
     if (data.nextPage === true) {
       this.$emit('interface', {form: 'tokens'})
     } else if (data.prev === true) {

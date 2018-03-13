@@ -147,10 +147,10 @@ import {Component} from 'vue-property-decorator'
 })
 export default class LinksForm extends Vue {
   form = {}
+  // Form validation rules
   rules = {
     required: (value) => !!value || 'Required'
   }
-  requiredFields = ['website']
   // This properties is used in alert dialog which tell users that some of entered values is invalid
   notEnough = false
   errorMessage = ''

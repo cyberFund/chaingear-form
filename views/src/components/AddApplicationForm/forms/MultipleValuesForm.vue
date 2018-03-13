@@ -103,12 +103,15 @@ export default class MultipleValuesForm extends Vue {
   // This method validates entered values. If values is valid, sends it to a parent component, otherwise shows alert 
   send () {
     if (this.firstField.type === 'contract' && this.form[this.firstField.key].length > 0) {
+      // If type of input is contract and first field is not empty - sends data to a parent component
       this.$emit('interface', {formData: this.form})
       this.form = {}
     } else if (!this.form[this.firstField.key] || !this.form[this.secondField.key]) {
+      // If type of input is not contract and one of the fields is empty - show alert message
       this.notEnough = true
       this.errorMessage = 'Please, fill both fields'
     } else {
+      // If type of input is address, validates cryptocurrency addresses entered in first field
       if (this.secondField.type === 'address' && secondValue === 'eth') {
         if (checkEthAddress(this.form[this.firstField.key]) === false) {
           this.notEnough = true
@@ -134,6 +137,7 @@ export default class MultipleValuesForm extends Vue {
           this.form = {}
         }
       } else if (this.firstField.type === 'num') {
+        // If type of input is num, checks if first field value is number
         const isNum = !isNaN(this.form[this.firstField.key] - parseFloat(this.form[this.firstField.key]))
         if (isNum === false) {
           this.notEnough = true

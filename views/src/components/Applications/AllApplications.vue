@@ -60,17 +60,17 @@ import * as config from '../../config.js'
 
 @Component({})
 export default class AllApplications extends Vue {
+  // Property that holds whole list of application documents
   applications = []
+  // Holds documents that will be rendered as page content
   pageContent = []
+  // Number of current page. Changed by handleCurrentChange method
   page = 1
+  // Total number of application documents sent by chaingear-backend API
   total = 0
+  // Property that used to show/hide spinner
   loading = true
-  dialog = false
-  asset_types = [
-    {label: 'Blockchain app', value: 'blockchain app'},
-    {label: 'Blockchain protocol', value: 'blockchain protocol'}
-  ]
-  formTitle = 'All applications'
+  // List of headers used in data table
   headers = [
     { text: 'Status', align: 'left', sortable: false, value: 'name' },
     { text: 'Project name', value: 'project_name'},
@@ -79,13 +79,15 @@ export default class AllApplications extends Vue {
     { text: 'Whitepaper', value: 'whitepaper'},
     { text: 'Github', value: 'github'}
   ]
+  // Sorting rule that is used to display applications
   pagination = {
     sortBy: 'timestamp'
   }
-  // Make an call to the Chaingear API, sort received data, splits it into into subarrays of 10 elements and assigns first subarray to the pageContent property
   mounted () {
+    // Fetches full list of applications from chaingear-backendAPI
     this.$http.get(config.chaingearApiUrl + '/get-all-applications')
       .then(result => {
+        // Function that splits array into sub-arrays of specififed length
         const chunk = (arr, len) => {
           let chunks = [],
             i = 0,
@@ -95,41 +97,53 @@ export default class AllApplications extends Vue {
           }
           return chunks
         }
-        result.body.applications = result.body.applications.filter(proj => proj.project_info !== undefined)
-        console.log(result.body.applications)
-        const sorted = result.body.applications.sort((a, b) => new Date(a.timestamp).valueOf() - new Date(b.timestamp).valueOf()).filter(project => project.project_info !== undefined).map(project => {
+        // Sort fetched documents array by date in ascending order, then map it to extract info that will be displayed on page
+        const sorted = result.body.applications.sort((a, b) => new Date(a.timestamp).valueOf() - new Date(b.timestamp).valueOf()).map(project => {
+          // Checks if application document has a timestapm 
           if (project.timestamp !== undefined) {
+            // Converts timestapm to the uman-readable string
             project.readableDate = dateformat(project.timestamp, 'mmmm dS, yyyy, h:MM:ss TT')
           }
+          // Converts timestamp to a number of milliseconds. This will be used to sort chunks on page
           project.timestamp = new Date(project.timestamp).valueOf()
           const info = project.project_info
-          console.log(info.blockchain.links)
+          // Check if application document has a links array
           if (info.blockchain.links !== undefined) {
+            // Checks if application document has a  website link object
             if (info.blockchain.links.filter(link => link.type === 'website').length > 0) {
+              // Extracts URL from link object
               project.website = info.blockchain.links.filter(link => link.type === 'website')[0].url
             }
             if (info.blockchain.links.filter(link => link.type === 'paper').length > 0) {
+              // Extracts URL from link object
               project.paper = info.blockchain.links.filter(link => link.type === 'paper')[0].url
-            } else project.paper = false
+            } else project.paper = false // Sets link property to false to render it as disabled link
             if (info.blockchain.links.filter(link => link.type === 'github').length > 0) {
+              // Extracts URL from link object
               project.git = info.blockchain.links.filter(link => link.type === 'github')[0].url
-            } else project.git = false
+            } else project.git = false // Sets link property to false to render it as disabled link
           }
           return project
         })
+        // Splits sorted array of application documents to the chunks of 10 elements
         this.applications = chunk(sorted, 10)
+        // This subarray of 10 application documents will be used on initial render. Later this value can be re-assigned after clicking on next page 
         this.pageContent = this.applications[0]
+        // This value will be used to compute the number of pages
         this.total = this.applications.length
+        // Hides spinner after all work done
         this.loading = false
       })
       .catch(err => {
         console.log(err)
       })
   }
+  // Watched property that sets new subarray as page content
   @Watch('page')
   onPageChanged(val, oldVal) {
     this.pageContent = this.applications[val - 1]
   }
+  // Method that changes number of page after clicking on page number or next page button
   handleCurrentChange (e) {
     this.pageContent = this.applications[e-1]
     this.page = e-1

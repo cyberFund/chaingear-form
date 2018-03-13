@@ -1,3 +1,4 @@
+// Object that is used as template to construct whole data structure in state
 module.exports = {
   commited: false,
   name: '',

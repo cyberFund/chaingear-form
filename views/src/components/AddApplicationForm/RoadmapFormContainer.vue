@@ -48,6 +48,7 @@ import RoadmapValuesContainer from './RoadmapValuesContainer'
   }
 })
 export default class RoadmapFormContainer extends Vue {
+  // Properties that is used to render a form
   firstField = {
     key: 'number',
     hint: '',
@@ -100,8 +101,8 @@ export default class RoadmapFormContainer extends Vue {
   ]
   head = ''
   disabled = true
+  // This array holds values entered by user
   milestones = []
-  i = 0
   // Checks if passed value has numeric type
   isNumeric (value) {
     return !isNaN(value - parseFloat(value))
