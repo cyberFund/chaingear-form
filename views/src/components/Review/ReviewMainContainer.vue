@@ -19,5 +19,5 @@ import AllApplications from './AllApplications'
     AllApplications
   }
 })
-export default class ApplicationsMainComponent extends Vue {}
+export default class ReviewMainComponent extends Vue {}
 </script>
