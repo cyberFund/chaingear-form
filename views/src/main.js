@@ -16,12 +16,14 @@ import * as phaseTemplate from './helpers/phase-template'
 import * as appTemplate from './helpers/app-template'
 import * as tokenTemplate from './helpers/token-template'
 import * as _ from 'lodash'
+const VueCookie = require('vue-cookie')
 
 Vue.use(Vuex)
 Vue.use(Vuelidate)
 Vue.use(Vuetify)
 Vue.use(VueResource)
 Vue.use(VeeValidate)
+Vue.use(VueCookie)
 Vue.config.productionTip = false
 
 // Intialize LogRocket plugin to collect data about users expirience

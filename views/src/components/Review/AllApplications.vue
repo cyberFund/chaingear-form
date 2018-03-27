@@ -54,6 +54,20 @@
           <v-pagination @click='handleCurrentChange' v-if='total > 1' :length="total" v-model="page" circle></v-pagination>
         </div>
       </v-flex>
+      <v-snackbar
+          :timeout="timeout"
+          :color='snackbarColor'
+          :top="y === 'top'"
+          :bottom="y === 'bottom'"
+          :right="x === 'right'"
+          :left="x === 'left'"
+          :multi-line="mode === 'multi-line'"
+          :vertical="mode === 'vertical'"
+          v-model="snackbar"
+        >
+          {{snackbarText}}
+          <v-btn flat @click.native="snackbar = false">Close</v-btn>
+        </v-snackbar>
     </v-layout>
   </div>
 </template>
@@ -91,10 +105,39 @@ export default class AllApplications extends Vue {
   pagination = {
     sortBy: 'timestamp'
   }
+  // Options for snackbar that is showed after successfull request for application approvment
+  snackbar = false
+  y = 'top'
+  x = null
+  mode = ''
+  timeout = 10000
+  snackbarColor = ''
+  snackbarText = ''
+
   sendApprove (item) {
-    this.$http.post(config.chaingearApiUrl + '/approve-application', JSON.stringify(item))
-      .then(res => console.log('approved'))
-      .catch(err => console.log(err))
+    console.log(`Bearer ${this.$cookie.get('jwt')}`)
+    this.$http.post(config.chaingearApiUrl + '/approve-application', JSON.stringify(item), {
+      headers: {
+        Authorization: `Bearer ${this.$cookie.get('jwt')}`
+      }
+    })
+      .then(res => {
+        if (res.status === 200 && res.body == 'success') {
+          this.snackbar = true
+          this.snackbarColor = 'green darken-1'
+          this.snackbarText = `${item.project_name} successfully approved`
+        } else {
+          return
+        }
+      })
+      .catch(err => {
+        if (err.status === 401) {
+          this.snackbar = true
+          this.snackbarColor = 'red lighten-1'
+          this.snackbarText = `It seems that you session was expired. Please, login again before making a request`
+        }
+        console.log(err.status)
+      })
   }
   sendReject () {
     console.log('click')

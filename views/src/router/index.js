@@ -4,6 +4,7 @@ import StartInfoPage from '../components/StartInfoPage'
 import AddProjectFormContainer from '../components/AddApplicationForm/AddProjectFormContainer'
 import AllApplications from '../components/Applications/AllApplications'
 import ReviewMainContainer from '../components/Review/AllApplications'
+import SecretLoginPage from '../components/SecretLoginPage'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +31,11 @@ export default new Router({
       path: '/review',
       name: 'Review applications',
       component: ReviewMainContainer
+    },
+    {
+      path: '/secret-login-page',
+      name: 'Login',
+      component: SecretLoginPage
     }
   ]
 })
