@@ -68,6 +68,20 @@
           {{snackbarText}}
           <v-btn flat @click.native="snackbar = false">Close</v-btn>
         </v-snackbar>
+        <v-snackbar
+          :timeout="loadingTimeout"
+          color='blue lighten-1'
+          :top="y === 'top'"
+          :bottom="y === 'bottom'"
+          :right="x === 'right'"
+          :left="x === 'left'"
+          :multi-line="mode === 'multi-line'"
+          :vertical="mode === 'vertical'"
+          v-model="loadingSnackbar"
+        >
+          Processing request...
+          <v-progress-circular indeterminate :width="3" color="white"></v-progress-circular>
+        </v-snackbar>
     </v-layout>
   </div>
 </template>
@@ -114,15 +128,25 @@ export default class AllApplications extends Vue {
   snackbarColor = ''
   snackbarText = ''
 
+  // Options for snackbar that is showed while backend app processing approvment request
+  loadingSnackbar = false
+  loadingTimeout = 1000000
+
   sendApprove (item) {
-    console.log(`Bearer ${this.$cookie.get('jwt')}`)
+    this.loadingSnackbar = true
     this.$http.post(config.chaingearApiUrl + '/approve-application', JSON.stringify(item), {
       headers: {
         Authorization: `Bearer ${this.$cookie.get('jwt')}`
       }
     })
       .then(res => {
+        this.loadingSnackbar = false
         if (res.status === 200 && res.body == 'success') {
+          this.applications = this.applications.map(chunk => {
+            chunk = chunk.filter(application => application.project_name !== item.project_name)
+            return chunk
+          })
+          this.pageContent = this.pageContent.filter(application => application.project_name !== item.project_name)
           this.snackbar = true
           this.snackbarColor = 'green darken-1'
           this.snackbarText = `${item.project_name} successfully approved`
@@ -131,12 +155,16 @@ export default class AllApplications extends Vue {
         }
       })
       .catch(err => {
+        this.loadingSnackbar = false
         if (err.status === 401) {
           this.snackbar = true
           this.snackbarColor = 'red lighten-1'
           this.snackbarText = `It seems that you session was expired. Please, login again before making a request`
+        } else {
+          this.snackbar = true
+          this.snackbarColor = 'red lighten-1'
+          this.snackbarText = err
         }
-        console.log(err.status)
       })
   }
   sendReject () {
