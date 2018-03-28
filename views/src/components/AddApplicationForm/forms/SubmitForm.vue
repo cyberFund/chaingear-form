@@ -19,6 +19,7 @@
               <v-text-field
                 label='Contact email*'
                 :value='email'
+                hint='We will use this email to contact you about your application status'
                 @change='setEmail'>
               </v-text-field>
               <v-text-field
@@ -76,6 +77,20 @@
         </v-container>
       </v-card-text>
     </v-card>
+    <v-dialog v-model="notEnough" max-width="390">
+      <v-card dark>
+        <v-card-title class="headline">Error</v-card-title>
+        <v-card-text>
+          <v-alert color="error" icon="warning" v-show="notEnough" value="true">
+            <span class="error-alert-span">{{errorMessage}}</span>
+          </v-alert>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" flat="flat" @click.native="notEnough = false">Ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -113,6 +128,8 @@ export default class SubmitForm extends Vue {
   }
   form = {}
   checked = false
+  notEnough = false
+  errorMessage = ''
   loading = false
   submitError = false
   errorCode = ''
@@ -123,6 +140,12 @@ export default class SubmitForm extends Vue {
   }
   // This method deletes technical fields from project description, constructs document and sends in to backend. If Golos username is specified, it also makes call to API to construct Golos post (this fuctionality is currently disabled)
   makeCommit () {
+    console.log(this.email)
+    if (this.email === undefined || this.email === null || this.email === '') {
+      this.notEnough = true
+      this.errorMessage = 'Please, fill email field'
+      return
+    }
     const cleanedProject = _.cloneDeep(this.projectInfo)
     cleanedProject.ico.common_info.is_ico = this.isIco
     cleanedProject.ico.phases = cleanedProject.ico.phases.map(phase => {
@@ -140,6 +163,7 @@ export default class SubmitForm extends Vue {
     const fullInfo = {
       project_name: this.projectInfo.blockchain.project_name,
       creator_email: this.email,
+      application_status: 'In work',
       timestamp: new Date().toISOString(),
       project_info: cleanedProject
     }

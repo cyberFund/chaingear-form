@@ -18,8 +18,9 @@
           <v-layout row wrap>
             <v-flex xs12 sm8>
               <v-text-field
-                name='project_name'
+                name='project_name_name'
                 label='Project Name*'
+                @change='checkProjectName'
                 v-validate.initial="'required'"
                 v-model='form.project_name'>
               </v-text-field>
@@ -110,7 +111,9 @@
 /* eslint-disable */
 import Vue from 'vue'
 import { required, maxLength } from 'vuelidate/lib/validators'
-import {Component} from 'vue-property-decorator'
+import {Component, Watch} from 'vue-property-decorator'
+import * as _ from 'lodash'
+import * as config from '../../../config.js'
 
 @Component({})
 export default class BlockchainForm extends Vue {
@@ -125,6 +128,24 @@ export default class BlockchainForm extends Vue {
   // This method changes isIco property in store based on corresponding select input value
   changeIsIco (e) {
     this.$store.commit('toggleIsIco', e)
+  }
+  get projectName () {
+    return this.form.project_name
+  }
+  checkProjectName () {
+    this.$http.get(`${config.chaingearApiUrl}/get-application/${this.projectName}`)
+      .then(result => {
+        if (result.body.message === 'successfully_finded') {
+          this.invalidName = true
+          this.notEnough = true
+          this.errorMessage = 'Application with this project name already exists. If you want to change some info in this application, please, contact us.'
+        } else return
+      }).catch(err => {
+        if (err.status === 404) {
+          this.invalidName = false
+        }
+      })
+   
   }
   // This properties are used in select inputs
   fieldsNames = {
@@ -161,6 +182,11 @@ export default class BlockchainForm extends Vue {
   errorMessage = ''
   // Checks if all fields are valid and if so automatically sets blockchain.dependency value and calls nextPane method defined on parent component
   next () {
+    if (this.invalidName === true) {
+      this.notEnough = true
+      this.errorMessage = 'Application with this project name already exists. If you want to change some info in this application, please, contact us.'
+      return 
+    }
     const valid = (this.errors.items.length === 0)
     if (valid === true) {
       if(this.form.dependency !== 'independent') {
