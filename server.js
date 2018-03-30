@@ -11,7 +11,7 @@ app.use('/static', express.static('files'))
 const port = 8080
 
 app.listen(port, () => {
-  console.log('listen 8000')
+  console.log(`listen ${port}`)
 })
 
 
